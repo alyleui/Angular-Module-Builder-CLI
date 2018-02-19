@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "title": "Angular Module Builder CLI",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "root": {
+      "type": "string",
+      "title": "The Root Schema",
+      "default": "src/lib"
+    },
+    "outDir": {
+      "type": "string",
+      "title": "The Outdir Schema",
+      "default": "dist-amb"
+    },
+    "version": {
+      "type": "string",
+      "title": "The Version Schema"
+    },
+    "pkg": {
+      "type": "string",
+      "title": "The Pkg Schema",
+      "default": "{root}/packpage.json"
+    },
+    "es2015": {
+      "type": "string",
+      "title": "The Es2015 Schema",
+      "default": "{root}/tsconfig-build.json"
+    },
+    "esm": {
+      "type": "string",
+      "title": "The Esm Schema",
+      "default": "{root}/tsconfig-esm.json"
+    },
+    "libs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Module name"
+          },
+          "dir": {
+            "type": "string",
+            "title": "Directory where the module container is",
+            "description": "Example:\n. === {name}/{name}\nmy-module === {root}/my-module",
+            "default": "{name}"
+          },
+          "pkg": {
+            "type": "string",
+            "title": "File package in dir, {root}/{dir}/package.json",
+            "default": "package.json"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version for this module",
+            "default": "{version}"
+          },
+          "es2015": {
+            "type": "string",
+            "title": "es2015 config in dir, {root}/{dir}/tsconfig-build.json",
+            "default": "ts.config-build"
+          },
+          "esm": {
+            "type": "string",
+            "title": "esm config in dir, {root}/{dir}/ts.config-esm.json",
+            "default": ""
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    "globals": {
+      "type": "object",
+      "title": "Globals for rollup"
+    }
+  }, 
+  "required": [
+    "version",
+    "libs",
+    "root",
+    "outDir"
+  ],
+  "additionalProperties": false
+}

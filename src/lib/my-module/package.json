@@ -1,0 +1,25 @@
+{
+  "name": "$name",
+  "version": "1.5.7",
+  "description": "description...",
+  "module": "$module",
+  "es2015": "$es2015",
+  "main": "$main",
+  "typings": "$typings",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+$GIT"
+  },
+  "dependencies": { },
+  "keywords": [
+    "angular"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/core": "^5.0.0",
+    "@angular/common": "^5.0.0"
+  }
+}

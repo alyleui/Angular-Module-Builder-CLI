@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig-es2015.json",
+  "compilerOptions": {
+    "target": "es5",
+    "outDir": "../../../dist/packages-dist/my-module",
+    "declaration": true
+  },
+  "files": [
+    "public_api.ts"
+  ],  
+  "angularCompilerOptions": {
+    "skipTemplateCodegen": true,
+    "strictMetadataEmit": true,
+    "enableSummariesForJit": false,
+    "flatModuleOutFile": "index.js",
+    "flatModuleId": "{name}"
+  }    
+}

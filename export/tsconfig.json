@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "lib": ["es6", "dom"],
+    "module": "commonjs",
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "outDir": "lib",
+    "moduleResolution": "node",
+    "target": "es6",
+    "strictNullChecks": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "types": [
+      "node"
+    ],
+    "baseUrl": "."
+  },
+  "files": [
+    "src/index.ts"
+  ]
+}
