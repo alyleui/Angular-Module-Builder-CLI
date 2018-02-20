@@ -5,17 +5,17 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "outDir": "lib",
-    "moduleResolution": "node",
+    "sourceMap": true,
     "target": "es6",
     "strictNullChecks": true,
     "noEmitOnError": true,
     "noImplicitAny": true,
-    "types": [
-      "node"
-    ],
-    "baseUrl": "."
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
-  "files": [
-    "src/index.ts"
+  "compileOnSave": true,
+  "include": [
+    "src"
   ]
 }

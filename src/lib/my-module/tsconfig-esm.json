@@ -1,18 +1,33 @@
 {
-  "extends": "./tsconfig-es2015.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "es2015",
     "target": "es5",
-    "outDir": "../../../dist/packages-dist/my-module",
-    "declaration": true
+    "noImplicitAny": false,
+    "outDir": "{dir}",
+    "rootDir": ".",
+    "sourceMap": true,
+    "inlineSources": true,
+    "declaration": true,
+    "strictNullChecks": true,
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "paths": {}
   },
   "files": [
     "public_api.ts"
-  ],  
+  ],
   "angularCompilerOptions": {
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
     "enableSummariesForJit": false,
     "flatModuleOutFile": "index.js",
-    "flatModuleId": "{name}"
-  }    
+    "flatModuleId": "my-module"
+  }
 }

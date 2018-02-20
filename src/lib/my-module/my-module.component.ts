@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-my-module',
-  template: 'hi!......',
+  templateUrl: './my-module.component.html',
   styles: ['.e{color: red;}']
 })
 export class MyModuleComponent implements OnInit {

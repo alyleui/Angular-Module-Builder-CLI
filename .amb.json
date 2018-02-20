@@ -6,6 +6,13 @@
   "libs": [
     {
       "name": "my-module"
+    },
+    {
+      "name": "example-demo"
+    },
+    {
+      "name": "root",
+      "dir": "/"
     }
   ],
   "globals": {

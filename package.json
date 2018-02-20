@@ -9,7 +9,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:package": "ts-node --fast -P export --type-check export/src"
+    "build:amb": "cd export && yarn build",
+    "amb": "node export/lib/index.js",
+    "test:amb": "yarn build:amb && yarn amb"
   },
   "dependencies": {
     "@angular/animations": "^5.2.0",
@@ -47,6 +49,7 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "node-sass-tilde-importer": "^1.0.1",
     "ora": "^1.4.0",
     "protractor": "~5.1.2",
     "rollup": "^0.56.1",

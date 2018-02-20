@@ -1,12 +1,11 @@
-import { rollup } from 'rollup';
+const rollup = require('rollup');
 const resolve = require('rollup-plugin-node-resolve');
-
 export function generateBundle(input: string, options: { file: string, globals: {[key: string]: string}, name: string }) {
-  return rollup({
+  return rollup.rollup({
     input,
     external: Object.keys(options.globals),
     plugins: [resolve()],
-  }).then(bundle => {
+  }).then((bundle: any) => {
     return bundle.write({
       format: 'umd',
       ...options,
