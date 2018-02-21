@@ -69,6 +69,7 @@ modules.forEach((module) => {
   if (!module.dir) {
     module.dir = `${name}`;
   }
+  module.container = module.dir;
   module.outDir = `${process.cwd()}/${ambConfig['outDir']}/${module.dir}`;
 
   module.pkg = getModuleFile(module, 'pkg', 'package.json');
@@ -77,14 +78,8 @@ modules.forEach((module) => {
     module.version = version;
   }
 
-  // if (!module.es2015) {
-  //   module.es2015 = `tsconfig-build.json`;
-  // }
   module.es2015 = getModuleFile(module, 'es2015', 'tsconfig-build.json');
 
-  // if (!module.esm) {
-  //   module.esm = `tsconfig-esm.json`;
-  // }
   module.esm = getModuleFile(module, 'esm', 'tsconfig-esm.json');
 
   for (const $key in module) {
@@ -164,13 +159,13 @@ function writeTsConfig(module: Module): {state: boolean, err: any} {
     }
     if (type === 'es2015') {
       tsconfigContent['compilerOptions']['outDir'] = '{dir}/es2015';
-      writeFileSync(`${module[type]}`, JSON.stringify(tsconfigContent, null, 2));
+      writeFileSync(`${tmp}/${module.container}/tsconfig-build.json`, JSON.stringify(tsconfigContent, null, 2));
     } else {
       tsconfigContent['compilerOptions']['outDir'] = '{dir}';
       tsconfigContent['angularCompilerOptions']['flatModuleOutFile'] = `index.js`;
       tsconfigContent['angularCompilerOptions']['flatModuleId'] = `${module.name}`;
       tsconfigContent['files'] = ['public_api.ts'];
-      writeFileSync(`${module[type]}`, JSON.stringify(tsconfigContent, null, 2));
+      writeFileSync(`${tmp}/${module.container}/tsconfig-esm.json`, JSON.stringify(tsconfigContent, null, 2));
     }
   };
   try {
@@ -216,13 +211,13 @@ Observable<{module: Module | null, state: 'start' | 'end' | 'err' | 'finish', ms
         writeTsConfig(module).state ? state('end', 'tsconfig updated') : state('err');
         const es2015 = () => {
           state('start', 'Building es2015...');
-          return ngc(`${module.es2015}`, `${module.outDir}`)
+          return ngc(`${tmp}/${module.container}/tsconfig-build.json`, `${module.outDir}`)
             .then(() => state('end', 'es2015 built'))
             .catch(() => state('err'));
         };
         const esm = () => {
           state('start', 'Building esm...');
-          return ngc(`${module.esm}`, `${module.outDir}`, 'esm')
+          return ngc(`${tmp}/${module.container}/tsconfig-esm.json`, `${module.outDir}`, 'esm')
             .then(() => state('end', 'esm built'))
             .catch(() => state('err'));
         };
@@ -247,17 +242,19 @@ Observable<{module: Module | null, state: 'start' | 'end' | 'err' | 'finish', ms
           uglifyJsFile(result.outputPathUMD, result.outputPathUMDmin);
           state('end', 'Successfully minified resources');
           state('start', 'Creating package...');
+          /** Read file */
           const pkgContent = JSON.parse(readFileSync(`${module.pkg}`, {encoding: 'utf8'}));
           /** Set Config */
           pkgContent['name'] = module.name;
           pkgContent['version'] = module.version;
-          pkgContent['main'] = `${module.name}.umd.js`;
+          pkgContent['main'] = `${converterToFileName(module.name)}.umd.js`;
           pkgContent['es2015'] = `es2015/index.js`;
           pkgContent['module'] = `index.js`;
           pkgContent['typings'] = `index.d.js`;
           writeFileSync(`${module.outDir}/package.json`, JSON.stringify(pkgContent, null, 2));
+          removeSync(`${tmp}/node_modules`);
+          copySync(`${module.outDir}`, `${tmp}/node_modules/${module.container}`);
           state('end', 'Package created successfully');
-          state('end');
         });
       });
       promiseSerial(funcs)
@@ -328,4 +325,6 @@ export interface Module {
   version?: string;
   es2015?: string;
   esm?: string;
+  /** {dir}: only dir folder */
+  container: string;
 }
