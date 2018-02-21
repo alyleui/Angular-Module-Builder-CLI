@@ -252,15 +252,15 @@ Observable<{module: Module | null, state: 'start' | 'end' | 'err' | 'finish', ms
           pkgContent['module'] = `index.js`;
           pkgContent['typings'] = `index.d.js`;
           writeFileSync(`${module.outDir}/package.json`, JSON.stringify(pkgContent, null, 2));
-          removeSync(`${tmp}/node_modules`);
-          copySync(`${module.outDir}`, `${tmp}/node_modules/${module.container}`);
+          // removeSync(`${tmp}/node_modules`);
+          copySync(`${module.outDir}`, `${tmp}/node_modules/${module.name}`);
           state('end', 'Package created successfully');
         });
       });
       promiseSerial(funcs)
       .then(() => {
         measure();
-        observer.next({module: null, state: 'finish', msg: null});
+        // observer.next({module: null, state: 'finish', msg: null});
       })
       .catch(console.error.bind(console));
     });
