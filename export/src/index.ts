@@ -12,6 +12,7 @@ import { mergeRecursive } from './common/merge-recursive';
 import { uglifyJsFile } from './common/minify-sources';
 const inlineResources = require('./common/inline-resources');
 const { prettySize } = require('pretty-size');
+const replaceInFile = require('replace-in-file');
 const gzipSize = require('gzip-size');
 import { extname } from 'path';
 import { readdir } from 'fs';
@@ -207,6 +208,24 @@ Observable<{module: Module | null, state: 'start' | 'end' | 'err' | 'finish', ms
     .then(() => {
       const funcs = modules.map(module => () => {
         const state = (st: 'start' | 'end' | 'err' | 'finish', msg: string | null = null) => (observer.next({module, state: st, msg}));
+
+        /** Bump version */
+        state('start', 'Updating version...');
+        let currentVersion = '';
+        replaceInFile.sync({
+          files: `${module.dir}/*.ts`,
+          from: /(\/\*\*\n?\s?\*?\s?@version.*\n?.*\*\/\n.*\;?\n)/g,
+          to: (match: string) => {
+            const rgxp = /\'.*\'/;
+            const vrsn = (match.match(rgxp) || [])[0];
+            if (vrsn.replace(/\'/g, '') !== module.version) {
+              currentVersion = vrsn;
+            }
+            return match.replace(rgxp, `'${module.version}'`);
+          }
+        });
+        state('end', !!currentVersion ? `New version: ${module.version}` : `Current version: ${module.version}`);
+
         state('start', 'Updating tsconfig');
         writeTsConfig(module).state ? state('end', 'tsconfig updated') : state('err');
         const es2015 = () => {
@@ -260,7 +279,7 @@ Observable<{module: Module | null, state: 'start' | 'end' | 'err' | 'finish', ms
       promiseSerial(funcs)
       .then(() => {
         measure();
-        // observer.next({module: null, state: 'finish', msg: null});
+        observer.next({module: null, state: 'finish', msg: null});
       })
       .catch(console.error.bind(console));
     });

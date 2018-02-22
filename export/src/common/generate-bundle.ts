@@ -8,10 +8,13 @@ export function generateBundle(input: string, options: { file: string, globals: 
     onwarn: (warning: any) => {
       // Suppress this error message... there are hundreds of them. Angular team says to ignore it.
       // https://github.com/rollup/rollup/wiki/Troubleshooting#this-is-undefined
-      if (warning['code'] === 'THIS_IS_UNDEFINED') {
-          return;
+      if (
+        warning['code'] === 'THIS_IS_UNDEFINED' ||
+        warning['code'] === 'UNUSED_EXTERNAL_IMPORT'
+      ) {
+        return;
       }
-      console.error(warning.message);
+      console.error(warning.code, warning.message);
   },
   }).then((bundle: any) => {
     return bundle.write({
