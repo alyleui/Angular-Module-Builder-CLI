@@ -1,6 +1,6 @@
-# Angular generator library
+# Angular Module Builder CLI
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.0.
+Build multiple modules
 
 ## Development server
 

@@ -21,7 +21,7 @@ const ambConfig = require(`${process.cwd()}/.amb.json`);
 const libRoot = ambConfig['root'];
 const tmp = ambConfig['tmp'] = `${process.cwd()}/.tmp/${libRoot.split('/').reverse()[0]}`;
 const GLOBALS = ambConfig['globals'];
-const version = '0.1.1';
+const version = ambConfig['version'];
 
 Console.log('Angular Module Builder CLI');
 /** Clean */
@@ -213,7 +213,7 @@ Observable<{module: Module | null, state: 'start' | 'end' | 'err' | 'finish', ms
         state('start', 'Updating version...');
         let currentVersion = '';
         replaceInFile.sync({
-          files: `${module.dir}/*.ts`,
+          files: `${module.dir}/version.ts`,
           from: /(\/\*\*\n?\s?\*?\s?@version.*\n?.*\*\/\n.*\;?\n)/g,
           to: (match: string) => {
             const rgxp = /\'.*\'/;
