@@ -1,6 +1,6 @@
 {
   "name": "angular-module-builder-cli",
-  "version": "0.0.2-beta.10",
+  "version": "0.0.2",
   "license": "MIT",
   "scripts": {
     "build": "rm -rf lib && tsc && cp src/common/inline-resources.js lib/common/inline-resources.js",
@@ -26,8 +26,5 @@
     "rollup": "^0.56.1",
     "rollup-plugin-node-resolve": "^3.0.3",
     "uglify-js": "^3.3.11"
-  },
-  "devDependencies": {
-    "typescript": "~2.5.3"
   }
 }

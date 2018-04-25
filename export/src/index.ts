@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/forkJoin';
+import { Observable } from 'rxjs';
 import chalk from 'chalk';
 import * as camelcase from 'camelcase';
 import * as ora from 'ora';
